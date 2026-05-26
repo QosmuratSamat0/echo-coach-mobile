@@ -4,7 +4,7 @@ import { Send, Mic, Play, ChevronRight, AlertCircle } from "lucide-react";
 import { MobileFrame } from "@/components/mobile/MobileFrame";
 import { BottomTabs } from "@/components/mobile/BottomTabs";
 import { MicButton, type MicStatus } from "@/components/mobile/MicButton";
-import { seedMessages, saveMessage, type ChatMsg } from "@/lib/corrections";
+import { seedMessages, saveMessage, type ChatMsg, type Correction } from "@/lib/corrections";
 
 export const Route = createFileRoute("/chat")({ component: ChatScreen });
 
@@ -141,18 +141,32 @@ function UserBubble({ msg, onOpen }: { msg: ChatMsg; onOpen: () => void }) {
   // but the WHOLE bubble is the clickable target.
   const renderText = () => {
     if (!hasCorrections) return msg.text;
-    const wrongs = msg.corrections!.map((c) => c.wrong.toLowerCase());
-    const parts = msg.text.split(/(\s+)/);
-    return parts.map((tok, i) => {
-      const cleaned = tok.replace(/[.,!?;:]/g, "").toLowerCase();
-      const isWrong = wrongs.some((w) => w === cleaned || w.split(/\s+/).includes(cleaned));
-      return isWrong ? (
-        <span key={i} className="underline decoration-white/80 decoration-wavy underline-offset-2">
-          {tok}
-        </span>
-      ) : (
-        <span key={i}>{tok}</span>
-      );
+    const corrections = msg.corrections!;
+    // Replace each wrong phrase (longest first to handle multi-word) with inline correction.
+    const sorted = [...corrections].sort((a, b) => b.wrong.length - a.wrong.length);
+    const placeholders: Correction[] = [];
+    let working = msg.text;
+    sorted.forEach((c, idx) => {
+      const re = new RegExp(`\\b${c.wrong.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
+      if (re.test(working)) {
+        working = working.replace(re, `\u0000${idx}\u0000`);
+        placeholders[idx] = c;
+      }
+    });
+    const parts = working.split(/\u0000(\d+)\u0000/);
+    return parts.map((p, i) => {
+      if (i % 2 === 1) {
+        const c = placeholders[Number(p)];
+        return (
+          <span key={i} className="inline-flex flex-wrap items-baseline gap-1">
+            <span className="text-white/70 line-through decoration-white/80">{c.wrong}</span>
+            <span className="rounded bg-white/20 px-1 font-semibold text-white">
+              {c.correct}
+            </span>
+          </span>
+        );
+      }
+      return <span key={i}>{p}</span>;
     });
   };
 
