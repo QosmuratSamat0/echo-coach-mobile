@@ -15,6 +15,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatCorrectionIdRouteImport } from './routes/chat.correction.$id'
 
 const StatsRoute = StatsRouteImport.update({
   id: '/stats',
@@ -46,37 +47,59 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatCorrectionIdRoute = ChatCorrectionIdRouteImport.update({
+  id: '/correction/$id',
+  path: '/correction/$id',
+  getParentRoute: () => ChatRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/chat': typeof ChatRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/stats': typeof StatsRoute
+  '/chat/correction/$id': typeof ChatCorrectionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/chat': typeof ChatRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/stats': typeof StatsRoute
+  '/chat/correction/$id': typeof ChatCorrectionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/chat': typeof ChatRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/stats': typeof StatsRoute
+  '/chat/correction/$id': typeof ChatCorrectionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/login' | '/profile' | '/register' | '/stats'
+  fullPaths:
+    | '/'
+    | '/chat'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/stats'
+    | '/chat/correction/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/login' | '/profile' | '/register' | '/stats'
+  to:
+    | '/'
+    | '/chat'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/stats'
+    | '/chat/correction/$id'
   id:
     | '__root__'
     | '/'
@@ -85,11 +108,12 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/stats'
+    | '/chat/correction/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ChatRoute: typeof ChatRoute
+  ChatRoute: typeof ChatRouteWithChildren
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
@@ -140,12 +164,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chat/correction/$id': {
+      id: '/chat/correction/$id'
+      path: '/correction/$id'
+      fullPath: '/chat/correction/$id'
+      preLoaderRoute: typeof ChatCorrectionIdRouteImport
+      parentRoute: typeof ChatRoute
+    }
   }
 }
 
+interface ChatRouteChildren {
+  ChatCorrectionIdRoute: typeof ChatCorrectionIdRoute
+}
+
+const ChatRouteChildren: ChatRouteChildren = {
+  ChatCorrectionIdRoute: ChatCorrectionIdRoute,
+}
+
+const ChatRouteWithChildren = ChatRoute._addFileChildren(ChatRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChatRoute: ChatRoute,
+  ChatRoute: ChatRouteWithChildren,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
