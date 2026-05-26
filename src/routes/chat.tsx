@@ -1,27 +1,29 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { Send, Mic, Play, Info } from "lucide-react";
+import { Send, Mic, Play, ChevronRight, AlertCircle } from "lucide-react";
 import { MobileFrame } from "@/components/mobile/MobileFrame";
 import { BottomTabs } from "@/components/mobile/BottomTabs";
 import { MicButton, type MicStatus } from "@/components/mobile/MicButton";
-import { InlineCorrectedText } from "@/components/mobile/InlineCorrectedText";
-import { seedMessages, type ChatMsg } from "@/lib/corrections";
+import { seedMessages, saveMessage, type ChatMsg } from "@/lib/corrections";
 
 export const Route = createFileRoute("/chat")({ component: ChatScreen });
 
 function ChatScreen() {
+  const navigate = useNavigate();
   const [status, setStatus] = useState<MicStatus>("idle");
   const [messages, setMessages] = useState<ChatMsg[]>(seedMessages);
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const pushMessage = (m: ChatMsg) => {
+    saveMessage(m);
+    setMessages((prev) => [...prev, m]);
+  };
+
   const sendText = () => {
     const t = draft.trim();
     if (!t) return;
-    setMessages((m) => [
-      ...m,
-      { id: `u-${Date.now()}`, role: "user", source: "text", text: t },
-    ]);
+    pushMessage({ id: `u-${Date.now()}`, role: "user", source: "text", text: t });
     setDraft("");
     inputRef.current?.focus();
   };
@@ -29,25 +31,22 @@ function ChatScreen() {
   const simulateAudio = () => {
     setStatus("processing");
     setTimeout(() => {
-      setMessages((m) => [
-        ...m,
-        {
-          id: `u-${Date.now()}`,
-          role: "user",
-          source: "audio",
-          text: "I have went there yesterday.",
-          corrections: [
-            {
-              wrong: "have went",
-              correct: "went",
-              reason:
-                "Use simple past with a specific past time like ‘yesterday’. Don’t mix present perfect with a finished time.",
-              pronunciation: "wehnt",
-              ipa: "/wɛnt/",
-            },
-          ],
-        },
-      ]);
+      pushMessage({
+        id: `u-${Date.now()}`,
+        role: "user",
+        source: "audio",
+        text: "I have went there yesterday.",
+        corrections: [
+          {
+            wrong: "have went",
+            correct: "went",
+            reason:
+              "Use simple past with a specific past time like ‘yesterday’. Don’t mix present perfect with a finished time.",
+            pronunciation: "wehnt",
+            ipa: "/wɛnt/",
+          },
+        ],
+      });
       setStatus("idle");
     }, 900);
   };
@@ -78,22 +77,11 @@ function ChatScreen() {
               </button>
             </div>
           ) : (
-            <div key={m.id} className="flex flex-col items-end gap-1.5">
-              <div className="max-w-[85%] rounded-xl rounded-tr-[4px] bg-primary px-3.5 py-2.5 text-sm text-white">
-                <InlineCorrectedText
-                  messageId={m.id}
-                  text={m.text}
-                  corrections={m.corrections}
-                />
-              </div>
-              {m.corrections && m.corrections.length > 0 && (
-                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                  <Info className="size-3" />
-                  Tap a highlighted word for details
-                  {m.source === "audio" && <span>· voice</span>}
-                </div>
-              )}
-            </div>
+            <UserBubble
+              key={m.id}
+              msg={m}
+              onOpen={() => navigate({ to: "/chat/correction/$id", params: { id: m.id } })}
+            />
           ),
         )}
       </div>
@@ -143,5 +131,62 @@ function ChatScreen() {
 
       <BottomTabs />
     </MobileFrame>
+  );
+}
+
+function UserBubble({ msg, onOpen }: { msg: ChatMsg; onOpen: () => void }) {
+  const hasCorrections = !!msg.corrections && msg.corrections.length > 0;
+
+  // Render text with subtle highlights so the user knows what was corrected,
+  // but the WHOLE bubble is the clickable target.
+  const renderText = () => {
+    if (!hasCorrections) return msg.text;
+    const wrongs = msg.corrections!.map((c) => c.wrong.toLowerCase());
+    const parts = msg.text.split(/(\s+)/);
+    return parts.map((tok, i) => {
+      const cleaned = tok.replace(/[.,!?;:]/g, "").toLowerCase();
+      const isWrong = wrongs.some((w) => w === cleaned || w.split(/\s+/).includes(cleaned));
+      return isWrong ? (
+        <span key={i} className="underline decoration-white/80 decoration-wavy underline-offset-2">
+          {tok}
+        </span>
+      ) : (
+        <span key={i}>{tok}</span>
+      );
+    });
+  };
+
+  const Wrapper: React.ElementType = hasCorrections ? "button" : "div";
+
+  return (
+    <div className="flex flex-col items-end gap-1.5">
+      <Wrapper
+        {...(hasCorrections ? { onClick: onOpen } : {})}
+        className={`max-w-[85%] text-left rounded-xl rounded-tr-[4px] bg-primary px-3.5 py-2.5 text-sm text-white ${
+          hasCorrections ? "cursor-pointer active:opacity-90" : ""
+        }`}
+      >
+        <div>{renderText()}</div>
+        {hasCorrections && (
+          <div className="mt-2 flex items-center justify-between gap-2 border-t border-white/20 pt-1.5 text-[11px] text-white/90">
+            <span className="inline-flex items-center gap-1">
+              <AlertCircle className="size-3" />
+              {msg.corrections!.length} correction
+              {msg.corrections!.length > 1 ? "s" : ""} · tap to view
+            </span>
+            <ChevronRight className="size-3.5" />
+          </div>
+        )}
+      </Wrapper>
+      {msg.source === "audio" && (
+        <Link
+          to="/chat"
+          className="text-[11px] text-muted-foreground"
+          onClick={(e) => e.preventDefault()}
+        >
+          voice message
+        </Link>
+      )}
+    </div>
   );
 }

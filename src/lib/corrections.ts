@@ -14,6 +14,16 @@ export type ChatMsg = {
   corrections?: Correction[];
 };
 
+// Simple in-memory store so the detail page can look up a message by id.
+const store = new Map<string, ChatMsg>();
+
+export function saveMessage(msg: ChatMsg) {
+  store.set(msg.id, msg);
+}
+export function getMessage(id: string): ChatMsg | undefined {
+  return store.get(id);
+}
+
 export const seedMessages: ChatMsg[] = [
   { id: "m1", role: "ai", source: "text", text: "Hi Alex! Tell me about your weekend." },
   {
@@ -57,3 +67,6 @@ export const seedMessages: ChatMsg[] = [
     ],
   },
 ];
+
+// Pre-seed the store so detail page works on direct navigation/refresh of seeded messages.
+seedMessages.forEach(saveMessage);
