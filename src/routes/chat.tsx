@@ -4,7 +4,7 @@ import { Send, Mic, Play, ChevronRight, AlertCircle } from "lucide-react";
 import { MobileFrame } from "@/components/mobile/MobileFrame";
 import { BottomTabs } from "@/components/mobile/BottomTabs";
 import { MicButton, type MicStatus } from "@/components/mobile/MicButton";
-import { seedMessages, saveMessage, type ChatMsg } from "@/lib/corrections";
+import { seedMessages, saveMessage, type ChatMsg, type Correction } from "@/lib/corrections";
 
 export const Route = createFileRoute("/chat")({ component: ChatScreen });
 
