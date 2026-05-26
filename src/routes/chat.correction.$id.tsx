@@ -71,7 +71,7 @@ function CorrectionDetail() {
             Nice — no corrections for this one. ✨
           </div>
         ) : (
-          corrections.map((c, i) => <CorrectionBlock key={i} c={c} />)
+          corrections.map((c: Correction, i: number) => <CorrectionBlock key={i} c={c} />)
         )}
 
         <Link
