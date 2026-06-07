@@ -9,22 +9,34 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StatsRouteImport } from './routes/stats'
+import { Route as RoleplayRouteImport } from './routes/roleplay'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as ChatRouteImport } from './routes/chat'
+import { Route as LessonsRouteImport } from './routes/lessons'
+import { Route as FreetalkRouteImport } from './routes/freetalk'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ChatCorrectionIdRouteImport } from './routes/chat.correction.$id'
+import { Route as LessonsIdRouteImport } from './routes/lessons.$id'
+import { Route as LessonSummaryRouteImport } from './routes/lesson.summary'
+import { Route as LessonStartRouteImport } from './routes/lesson.start'
+import { Route as LessonSessionRouteImport } from './routes/lesson.session'
+import { Route as LessonResultRouteImport } from './routes/lesson.result'
+import { Route as LessonPracticeRouteImport } from './routes/lesson.practice'
 
-const StatsRoute = StatsRouteImport.update({
-  id: '/stats',
-  path: '/stats',
+const RoleplayRoute = RoleplayRouteImport.update({
+  id: '/roleplay',
+  path: '/roleplay',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -37,9 +49,14 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
+const LessonsRoute = LessonsRouteImport.update({
+  id: '/lessons',
+  path: '/lessons',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreetalkRoute = FreetalkRouteImport.update({
+  id: '/freetalk',
+  path: '/freetalk',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -47,86 +64,160 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatCorrectionIdRoute = ChatCorrectionIdRouteImport.update({
-  id: '/correction/$id',
-  path: '/correction/$id',
-  getParentRoute: () => ChatRoute,
+const LessonsIdRoute = LessonsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonSummaryRoute = LessonSummaryRouteImport.update({
+  id: '/lesson/summary',
+  path: '/lesson/summary',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonStartRoute = LessonStartRouteImport.update({
+  id: '/lesson/start',
+  path: '/lesson/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonSessionRoute = LessonSessionRouteImport.update({
+  id: '/lesson/session',
+  path: '/lesson/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonResultRoute = LessonResultRouteImport.update({
+  id: '/lesson/result',
+  path: '/lesson/result',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonPracticeRoute = LessonPracticeRouteImport.update({
+  id: '/lesson/practice',
+  path: '/lesson/practice',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRouteWithChildren
+  '/freetalk': typeof FreetalkRoute
+  '/lessons': typeof LessonsRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/register': typeof RegisterRoute
-  '/stats': typeof StatsRoute
-  '/chat/correction/$id': typeof ChatCorrectionIdRoute
+  '/roleplay': typeof RoleplayRoute
+  '/lesson/practice': typeof LessonPracticeRoute
+  '/lesson/result': typeof LessonResultRoute
+  '/lesson/session': typeof LessonSessionRoute
+  '/lesson/start': typeof LessonStartRoute
+  '/lesson/summary': typeof LessonSummaryRoute
+  '/lessons/$id': typeof LessonsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRouteWithChildren
+  '/freetalk': typeof FreetalkRoute
+  '/lessons': typeof LessonsRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/register': typeof RegisterRoute
-  '/stats': typeof StatsRoute
-  '/chat/correction/$id': typeof ChatCorrectionIdRoute
+  '/roleplay': typeof RoleplayRoute
+  '/lesson/practice': typeof LessonPracticeRoute
+  '/lesson/result': typeof LessonResultRoute
+  '/lesson/session': typeof LessonSessionRoute
+  '/lesson/start': typeof LessonStartRoute
+  '/lesson/summary': typeof LessonSummaryRoute
+  '/lessons/$id': typeof LessonsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/chat': typeof ChatRouteWithChildren
+  '/freetalk': typeof FreetalkRoute
+  '/lessons': typeof LessonsRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/register': typeof RegisterRoute
-  '/stats': typeof StatsRoute
-  '/chat/correction/$id': typeof ChatCorrectionIdRoute
+  '/roleplay': typeof RoleplayRoute
+  '/lesson/practice': typeof LessonPracticeRoute
+  '/lesson/result': typeof LessonResultRoute
+  '/lesson/session': typeof LessonSessionRoute
+  '/lesson/start': typeof LessonStartRoute
+  '/lesson/summary': typeof LessonSummaryRoute
+  '/lessons/$id': typeof LessonsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/chat'
+    | '/freetalk'
+    | '/lessons'
     | '/login'
     | '/profile'
+    | '/progress'
     | '/register'
-    | '/stats'
-    | '/chat/correction/$id'
+    | '/roleplay'
+    | '/lesson/practice'
+    | '/lesson/result'
+    | '/lesson/session'
+    | '/lesson/start'
+    | '/lesson/summary'
+    | '/lessons/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/chat'
+    | '/freetalk'
+    | '/lessons'
     | '/login'
     | '/profile'
+    | '/progress'
     | '/register'
-    | '/stats'
-    | '/chat/correction/$id'
+    | '/roleplay'
+    | '/lesson/practice'
+    | '/lesson/result'
+    | '/lesson/session'
+    | '/lesson/start'
+    | '/lesson/summary'
+    | '/lessons/$id'
   id:
     | '__root__'
     | '/'
-    | '/chat'
+    | '/freetalk'
+    | '/lessons'
     | '/login'
     | '/profile'
+    | '/progress'
     | '/register'
-    | '/stats'
-    | '/chat/correction/$id'
+    | '/roleplay'
+    | '/lesson/practice'
+    | '/lesson/result'
+    | '/lesson/session'
+    | '/lesson/start'
+    | '/lesson/summary'
+    | '/lessons/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ChatRoute: typeof ChatRouteWithChildren
+  FreetalkRoute: typeof FreetalkRoute
+  LessonsRoute: typeof LessonsRouteWithChildren
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
+  ProgressRoute: typeof ProgressRoute
   RegisterRoute: typeof RegisterRoute
-  StatsRoute: typeof StatsRoute
+  RoleplayRoute: typeof RoleplayRoute
+  LessonPracticeRoute: typeof LessonPracticeRoute
+  LessonResultRoute: typeof LessonResultRoute
+  LessonSessionRoute: typeof LessonSessionRoute
+  LessonStartRoute: typeof LessonStartRoute
+  LessonSummaryRoute: typeof LessonSummaryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/stats': {
-      id: '/stats'
-      path: '/stats'
-      fullPath: '/stats'
-      preLoaderRoute: typeof StatsRouteImport
+    '/roleplay': {
+      id: '/roleplay'
+      path: '/roleplay'
+      fullPath: '/roleplay'
+      preLoaderRoute: typeof RoleplayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -134,6 +225,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -150,11 +248,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
+    '/lessons': {
+      id: '/lessons'
+      path: '/lessons'
+      fullPath: '/lessons'
+      preLoaderRoute: typeof LessonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/freetalk': {
+      id: '/freetalk'
+      path: '/freetalk'
+      fullPath: '/freetalk'
+      preLoaderRoute: typeof FreetalkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -164,33 +269,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chat/correction/$id': {
-      id: '/chat/correction/$id'
-      path: '/correction/$id'
-      fullPath: '/chat/correction/$id'
-      preLoaderRoute: typeof ChatCorrectionIdRouteImport
-      parentRoute: typeof ChatRoute
+    '/lessons/$id': {
+      id: '/lessons/$id'
+      path: '/$id'
+      fullPath: '/lessons/$id'
+      preLoaderRoute: typeof LessonsIdRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lesson/summary': {
+      id: '/lesson/summary'
+      path: '/lesson/summary'
+      fullPath: '/lesson/summary'
+      preLoaderRoute: typeof LessonSummaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/start': {
+      id: '/lesson/start'
+      path: '/lesson/start'
+      fullPath: '/lesson/start'
+      preLoaderRoute: typeof LessonStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/session': {
+      id: '/lesson/session'
+      path: '/lesson/session'
+      fullPath: '/lesson/session'
+      preLoaderRoute: typeof LessonSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/result': {
+      id: '/lesson/result'
+      path: '/lesson/result'
+      fullPath: '/lesson/result'
+      preLoaderRoute: typeof LessonResultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/practice': {
+      id: '/lesson/practice'
+      path: '/lesson/practice'
+      fullPath: '/lesson/practice'
+      preLoaderRoute: typeof LessonPracticeRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface ChatRouteChildren {
-  ChatCorrectionIdRoute: typeof ChatCorrectionIdRoute
+interface LessonsRouteChildren {
+  LessonsIdRoute: typeof LessonsIdRoute
 }
 
-const ChatRouteChildren: ChatRouteChildren = {
-  ChatCorrectionIdRoute: ChatCorrectionIdRoute,
+const LessonsRouteChildren: LessonsRouteChildren = {
+  LessonsIdRoute: LessonsIdRoute,
 }
 
-const ChatRouteWithChildren = ChatRoute._addFileChildren(ChatRouteChildren)
+const LessonsRouteWithChildren =
+  LessonsRoute._addFileChildren(LessonsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChatRoute: ChatRouteWithChildren,
+  FreetalkRoute: FreetalkRoute,
+  LessonsRoute: LessonsRouteWithChildren,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
+  ProgressRoute: ProgressRoute,
   RegisterRoute: RegisterRoute,
-  StatsRoute: StatsRoute,
+  RoleplayRoute: RoleplayRoute,
+  LessonPracticeRoute: LessonPracticeRoute,
+  LessonResultRoute: LessonResultRoute,
+  LessonSessionRoute: LessonSessionRoute,
+  LessonStartRoute: LessonStartRoute,
+  LessonSummaryRoute: LessonSummaryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
