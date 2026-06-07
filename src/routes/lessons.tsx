@@ -90,7 +90,7 @@ function Lessons() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <span>{l.date}</span>
-                      <span>·</span>
+                      <span>-</span>
                       <span className="font-medium text-primary">{l.mode}</span>
                     </div>
                     <div className="mt-0.5 text-sm font-semibold text-foreground">{l.topic}</div>

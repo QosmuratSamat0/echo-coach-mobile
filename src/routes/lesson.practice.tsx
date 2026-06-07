@@ -65,7 +65,7 @@ function Practice() {
           <section className="rounded-2xl bg-[#ecfdf5] p-5 text-center">
             <CheckCircle2 className="mx-auto size-10 text-[#10b981]" />
             <div className="mt-2 text-base font-semibold text-foreground">Great. You fixed it.</div>
-            <div className="mt-1 text-xs text-muted-foreground">Keep going — small wins add up.</div>
+            <div className="mt-1 text-xs text-muted-foreground">Keep going - small wins add up.</div>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button
                 onClick={() => {

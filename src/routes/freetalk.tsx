@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Send, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { ArrowLeft, Send, ChevronDown, ChevronUp, Sparkles, Flag } from "lucide-react";
 import { MobileFrame } from "@/components/mobile/MobileFrame";
 import { MicButton, type MicStatus } from "@/components/mobile/MicButton";
 
@@ -10,7 +10,7 @@ type Msg = {
   id: string;
   role: "ai" | "user";
   text: string;
-  correction?: { better: string; why: string };
+  correction?: { pattern: string; better: string; why: string };
 };
 
 const seed: Msg[] = [
@@ -19,7 +19,11 @@ const seed: Msg[] = [
     id: "2",
     role: "user",
     text: "I am agree with you, today was good.",
-    correction: { better: "I agree with you.", why: "Don’t use ‘am’ with ‘agree’." },
+    correction: {
+      pattern: "agreement",
+      better: "I agree with you.",
+      why: "Do not use 'am' with 'agree'.",
+    },
   },
   { id: "3", role: "ai", text: "Nice. Tell me about the best part of your day." },
 ];
@@ -37,7 +41,7 @@ function FreeTalk() {
     setTimeout(() => {
       setMessages((p) => [
         ...p,
-        { id: `a${Date.now()}`, role: "ai", text: "Got it — tell me more!" },
+        { id: `a${Date.now()}`, role: "ai", text: "Got it - tell me more!" },
       ]);
     }, 600);
   };
@@ -54,14 +58,20 @@ function FreeTalk() {
         </Link>
         <div className="flex-1">
           <div className="text-sm font-semibold text-foreground">Free Talk</div>
-          <div className="text-[11px] text-muted-foreground">Open practice · AI still corrects you</div>
+          <div className="text-[11px] text-muted-foreground">Open practice - AI still corrects you</div>
         </div>
-        <span className="rounded-full bg-primary-light px-2.5 py-1 text-[10px] font-semibold text-primary">
-          Practice
-        </span>
+        <Link
+          to="/talk-summary"
+          className="inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[10px] font-semibold text-white"
+        >
+          End talk <Flag className="size-3" />
+        </Link>
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-[#f6f5fd]">
+        <section className="rounded-2xl border border-primary/20 bg-white p-3 text-xs text-muted-foreground shadow-sm">
+          Chat naturally. Noona saves repeated patterns quietly and turns them into quick lessons.
+        </section>
         {messages.map((m) =>
           m.role === "ai" ? (
             <div key={m.id} className="max-w-[82%] rounded-2xl rounded-tl-md bg-white px-3.5 py-2.5 text-sm text-foreground shadow-sm">
@@ -72,7 +82,7 @@ function FreeTalk() {
               <div className="rounded-2xl rounded-tr-md bg-primary px-3.5 py-2.5 text-sm text-white">
                 {m.text}
               </div>
-              {m.correction && <CorrectionCard c={m.correction} />}
+              {m.correction && <CorrectionBadge c={m.correction} />}
             </div>
           ),
         )}
@@ -107,25 +117,35 @@ function FreeTalk() {
             {mic === "recording" ? "Listening..." : "or hold to speak"}
           </span>
         </div>
+        <Link
+          to="/talk-summary"
+          className="block text-center text-[11px] font-semibold text-primary"
+        >
+          Finish and see patterns
+        </Link>
       </div>
     </MobileFrame>
   );
 }
 
-function CorrectionCard({ c }: { c: { better: string; why: string } }) {
+function CorrectionBadge({ c }: { c: { pattern: string; better: string; why: string } }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="rounded-xl border border-primary/30 bg-primary-light p-2.5 text-xs">
+    <div className="text-xs">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-1.5 text-left"
+        className="ml-auto flex items-center gap-1.5 rounded-full bg-primary-light px-2.5 py-1 text-primary"
       >
         <Sparkles className="size-3 text-primary" />
-        <span className="font-semibold text-primary">Better:</span>
-        <span className="flex-1 text-foreground">{c.better}</span>
+        <span className="font-semibold">{c.pattern}</span>
         {open ? <ChevronUp className="size-3.5 text-primary" /> : <ChevronDown className="size-3.5 text-primary" />}
       </button>
-      {open && <p className="mt-1.5 text-muted-foreground">{c.why}</p>}
+      {open && (
+        <div className="mt-1.5 rounded-xl border border-primary/20 bg-white p-2.5 shadow-sm">
+          <div className="font-semibold text-primary">Better: {c.better}</div>
+          <p className="mt-1 text-muted-foreground">{c.why}</p>
+        </div>
+      )}
     </div>
   );
 }

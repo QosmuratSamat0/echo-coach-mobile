@@ -72,14 +72,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Noona AI — your daily English coach" },
+      { title: "Noona AI - your daily English coach" },
       { name: "description", content: "Noona AI is your personal daily English coach: short guided lessons, real-life role-plays, and friendly AI feedback." },
       { name: "author", content: "Noona AI" },
-      { property: "og:title", content: "Noona AI — your daily English coach" },
+      { property: "og:title", content: "Noona AI - your daily English coach" },
       { property: "og:description", content: "Short daily lessons, role-plays, and AI feedback to improve your English every day." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Noona AI — your daily English coach" },
+      { name: "twitter:title", content: "Noona AI - your daily English coach" },
       { name: "twitter:description", content: "Short daily lessons, role-plays, and AI feedback to improve your English every day." },
     ],
     links: [

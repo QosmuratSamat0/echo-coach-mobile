@@ -60,7 +60,7 @@ function LoginScreen() {
             <Link to="/login" className="font-medium text-foreground hover:text-primary">
               Sign in
             </Link>
-            <span className="text-border">·</span>
+            <span className="text-border">-</span>
             <Link to="/register" className="font-medium text-foreground hover:text-primary">
               Create account
             </Link>

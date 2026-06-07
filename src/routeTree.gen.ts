@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TalkSummaryRouteImport } from './routes/talk-summary'
 import { Route as RoleplayRouteImport } from './routes/roleplay'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProgressRouteImport } from './routes/progress'
@@ -24,6 +25,11 @@ import { Route as LessonSessionRouteImport } from './routes/lesson.session'
 import { Route as LessonResultRouteImport } from './routes/lesson.result'
 import { Route as LessonPracticeRouteImport } from './routes/lesson.practice'
 
+const TalkSummaryRoute = TalkSummaryRouteImport.update({
+  id: '/talk-summary',
+  path: '/talk-summary',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoleplayRoute = RoleplayRouteImport.update({
   id: '/roleplay',
   path: '/roleplay',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/progress': typeof ProgressRoute
   '/register': typeof RegisterRoute
   '/roleplay': typeof RoleplayRoute
+  '/talk-summary': typeof TalkSummaryRoute
   '/lesson/practice': typeof LessonPracticeRoute
   '/lesson/result': typeof LessonResultRoute
   '/lesson/session': typeof LessonSessionRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/progress': typeof ProgressRoute
   '/register': typeof RegisterRoute
   '/roleplay': typeof RoleplayRoute
+  '/talk-summary': typeof TalkSummaryRoute
   '/lesson/practice': typeof LessonPracticeRoute
   '/lesson/result': typeof LessonResultRoute
   '/lesson/session': typeof LessonSessionRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/progress': typeof ProgressRoute
   '/register': typeof RegisterRoute
   '/roleplay': typeof RoleplayRoute
+  '/talk-summary': typeof TalkSummaryRoute
   '/lesson/practice': typeof LessonPracticeRoute
   '/lesson/result': typeof LessonResultRoute
   '/lesson/session': typeof LessonSessionRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/register'
     | '/roleplay'
+    | '/talk-summary'
     | '/lesson/practice'
     | '/lesson/result'
     | '/lesson/session'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/register'
     | '/roleplay'
+    | '/talk-summary'
     | '/lesson/practice'
     | '/lesson/result'
     | '/lesson/session'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/progress'
     | '/register'
     | '/roleplay'
+    | '/talk-summary'
     | '/lesson/practice'
     | '/lesson/result'
     | '/lesson/session'
@@ -204,6 +216,7 @@ export interface RootRouteChildren {
   ProgressRoute: typeof ProgressRoute
   RegisterRoute: typeof RegisterRoute
   RoleplayRoute: typeof RoleplayRoute
+  TalkSummaryRoute: typeof TalkSummaryRoute
   LessonPracticeRoute: typeof LessonPracticeRoute
   LessonResultRoute: typeof LessonResultRoute
   LessonSessionRoute: typeof LessonSessionRoute
@@ -213,6 +226,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/talk-summary': {
+      id: '/talk-summary'
+      path: '/talk-summary'
+      fullPath: '/talk-summary'
+      preLoaderRoute: typeof TalkSummaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/roleplay': {
       id: '/roleplay'
       path: '/roleplay'
@@ -334,6 +354,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgressRoute: ProgressRoute,
   RegisterRoute: RegisterRoute,
   RoleplayRoute: RoleplayRoute,
+  TalkSummaryRoute: TalkSummaryRoute,
   LessonPracticeRoute: LessonPracticeRoute,
   LessonResultRoute: LessonResultRoute,
   LessonSessionRoute: LessonSessionRoute,
@@ -343,3 +364,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

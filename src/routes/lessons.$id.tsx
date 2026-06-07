@@ -32,7 +32,7 @@ function LessonDetail() {
           <ArrowLeft className="size-4" />
         </Link>
         <div className="flex-1">
-          <div className="text-[11px] text-muted-foreground">Mar {id} · Classic</div>
+          <div className="text-[11px] text-muted-foreground">Mar {id} - Classic</div>
           <div className="text-sm font-semibold text-foreground">Past simple</div>
         </div>
         <div className="text-right">
@@ -61,7 +61,7 @@ function LessonDetail() {
               <div className="rounded-xl bg-primary-light px-3 py-2 text-sm text-foreground">
                 <span className="font-semibold text-primary">Better:</span> {e.better}
               </div>
-              <div className="text-[11px] font-semibold text-primary">Focus · {e.focus}</div>
+              <div className="text-[11px] font-semibold text-primary">Focus - {e.focus}</div>
             </article>
           ))}
         </div>

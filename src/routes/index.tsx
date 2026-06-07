@@ -16,12 +16,13 @@ const week = [
 ];
 
 function Home() {
-  const status: "not_started" | "in_progress" | "completed" = "in_progress" as
+  const status: "not_started" | "in_progress" | "completed" = "not_started" as
     | "not_started"
     | "in_progress"
     | "completed";
   const cta =
     status === "not_started" ? "Start Lesson" : status === "in_progress" ? "Continue" : "View Summary";
+  const lessonTo = status === "not_started" ? "/lesson/start" : "/lesson/session";
 
   return (
     <MobileFrame>
@@ -30,7 +31,7 @@ function Home() {
         <header className="flex items-center justify-between">
           <div>
             <div className="text-xs text-muted-foreground">Good morning</div>
-            <h1 className="text-[22px] font-semibold tracking-tight text-foreground">Ayan ✨</h1>
+            <h1 className="text-[22px] font-semibold tracking-tight text-foreground">Ayan</h1>
           </div>
           <div className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
             <Flame className="size-3.5 text-[#f97316]" /> 5
@@ -42,26 +43,52 @@ function Home() {
           <div className="absolute -right-10 -top-10 size-40 rounded-full bg-white/10 blur-2xl" />
           <div className="relative">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider">
-              <Sparkles className="size-3" /> Today’s lesson
+              <Sparkles className="size-3" /> Today's lesson
             </div>
             <h2 className="mt-3 text-xl font-semibold leading-tight">Past tense in everyday talk</h2>
-            <p className="mt-1 text-sm text-white/80">3 short exercises · ~6 min</p>
+            <p className="mt-1 text-sm text-white/80">Built from your recent Free Talk mistakes</p>
+
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {["past tense", "articles", "word order"].map((tag) => (
+                <span key={tag} className="rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold">
+                  {tag}
+                </span>
+              ))}
+            </div>
 
             <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
               <div className="h-full rounded-full bg-white" style={{ width: "33%" }} />
             </div>
             <div className="mt-1.5 flex items-center justify-between text-[11px] text-white/80">
-              <span>Exercise 1 of 3</span>
-              <span>In progress</span>
+              <span>3 short exercises</span>
+              <span>{status === "not_started" ? "Not started" : "In progress"}</span>
             </div>
 
             <Link
-              to="/lesson/session"
+              to={lessonTo}
               className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white py-3 text-sm font-semibold text-primary"
             >
               {cta} <ArrowRight className="size-4" />
             </Link>
           </div>
+        </section>
+
+        <section className="rounded-2xl border border-primary/20 bg-white p-4 shadow-sm">
+          <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+            From your last talk
+          </div>
+          <div className="mt-1 text-sm font-semibold text-foreground">
+            Noona noticed 3 patterns to fix.
+          </div>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+            Talk naturally first. We turn repeated mistakes into small lessons after.
+          </p>
+          <Link
+            to="/talk-summary"
+            className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary"
+          >
+            View talk summary <ArrowRight className="size-3.5" />
+          </Link>
         </section>
 
         {/* Today stats */}
@@ -127,7 +154,7 @@ function Home() {
           </div>
           <div className="flex-1">
             <div className="text-sm font-semibold text-foreground">Want to just talk?</div>
-            <div className="text-xs text-muted-foreground">Free chat with AI, still corrected.</div>
+            <div className="text-xs text-muted-foreground">Talk first. Fix patterns after.</div>
           </div>
           <span className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-white">
             Free Talk

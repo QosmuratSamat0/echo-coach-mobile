@@ -43,7 +43,7 @@ const modes: Mode[] = [
   {
     id: "free",
     title: "Free Talk",
-    desc: "Open chat with AI · still corrected.",
+    desc: "Talk first. Fix patterns after.",
     icon: MessageCircle,
     color: "bg-[#dcfce7] text-[#15803d]",
     to: "/freetalk",

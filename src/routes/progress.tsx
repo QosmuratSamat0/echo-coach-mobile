@@ -25,7 +25,7 @@ function ProgressScreen() {
       <main className="flex-1 overflow-y-auto px-5 pt-7 pb-6 space-y-5 bg-[#f6f5fd]">
         <header>
           <h1 className="text-xl font-semibold text-foreground">Your progress</h1>
-          <p className="text-xs text-muted-foreground">How you’re improving this week</p>
+          <p className="text-xs text-muted-foreground">How you are improving this week</p>
         </header>
 
         <section className="rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-5 text-white shadow-lg">
@@ -33,7 +33,7 @@ function ProgressScreen() {
             <TrendingUp className="size-3.5" /> This week
           </div>
           <div className="mt-2 text-2xl font-semibold">Speaking +12%</div>
-          <p className="mt-1 text-sm text-white/80">+34 new words · 7 mistakes fixed</p>
+          <p className="mt-1 text-sm text-white/80">+34 new words - 7 mistakes fixed</p>
         </section>
 
         <section className="rounded-2xl bg-white p-4 shadow-sm">
@@ -76,7 +76,7 @@ function ProgressScreen() {
           </div>
           <div className="mt-1 text-sm font-semibold text-foreground">Past tense</div>
           <p className="mt-1 text-xs text-muted-foreground">
-            Recommended: Role-play · Talking about yesterday
+            Recommended: Role-play - Talking about yesterday
           </p>
           <Link
             to="/lesson/practice"

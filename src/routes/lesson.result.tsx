@@ -62,7 +62,7 @@ function Result() {
           <div className="text-sm font-semibold text-foreground">Why</div>
           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             Use the past tense with <span className="font-semibold text-foreground">yesterday</span>.
-            “Go” becomes “went”.
+            "Go" becomes "went".
           </p>
         </section>
 
