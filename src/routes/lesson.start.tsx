@@ -4,14 +4,24 @@ import { MobileFrame } from "@/components/mobile/MobileFrame";
 
 export const Route = createFileRoute("/lesson/start")({ component: ModeSelect });
 
-const modes = [
+type Mode = {
+  id: string;
+  title: string;
+  desc: string;
+  icon: typeof BookOpen;
+  color: string;
+  to: "/lesson/session" | "/roleplay" | "/freetalk";
+  recommended?: boolean;
+};
+
+const modes: Mode[] = [
   {
     id: "classic",
     title: "Classic",
     desc: "Guided practice with simple prompts.",
     icon: BookOpen,
     color: "bg-primary-light text-primary",
-    to: "/lesson/session" as const,
+    to: "/lesson/session",
     recommended: true,
   },
   {
@@ -20,7 +30,7 @@ const modes = [
     desc: "Coffee shop, airport, interview...",
     icon: Users,
     color: "bg-[#fef3c7] text-[#b45309]",
-    to: "/roleplay" as const,
+    to: "/roleplay",
   },
   {
     id: "unexpected",
@@ -28,7 +38,7 @@ const modes = [
     desc: "Sudden situations. React fast.",
     icon: Zap,
     color: "bg-[#fee2e2] text-[#dc2626]",
-    to: "/lesson/session" as const,
+    to: "/lesson/session",
   },
   {
     id: "free",
@@ -36,9 +46,9 @@ const modes = [
     desc: "Open chat with AI · still corrected.",
     icon: MessageCircle,
     color: "bg-[#dcfce7] text-[#15803d]",
-    to: "/freetalk" as const,
+    to: "/freetalk",
   },
-] as const;
+];
 
 function ModeSelect() {
   return (

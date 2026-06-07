@@ -16,7 +16,10 @@ const week = [
 ];
 
 function Home() {
-  const status: "not_started" | "in_progress" | "completed" = "in_progress";
+  const status: "not_started" | "in_progress" | "completed" = "in_progress" as
+    | "not_started"
+    | "in_progress"
+    | "completed";
   const cta =
     status === "not_started" ? "Start Lesson" : status === "in_progress" ? "Continue" : "View Summary";
 
